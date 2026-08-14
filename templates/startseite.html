@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmeldung</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css.css') }}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header>
+            <img class="gvss-logo" src="{{ url_for('static', filename='GvSS-logo-blau.png') }}" alt="Gvss-Logo">
+            <nav>
+                <ul>
+                    <li>Bildungsangebote</li>
+                    <li>Schule</li>
+                    <li>#GvSS</li>
+                    <li>Aktuelles</li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <div class="login-card">
+                <h1>Anmeldung</h1>
+                <p class="subtitle">Bitte logge dich mit deinem GvSS-Konto ein.</p>
+                
+                <form action="/login" method="POST">
+                    <div class="input-group">
+                        <label for="mail">E-Mail</label>
+                        <input type="email" name="mail" id="mail" placeholder="vorname.nachname@gvss.de" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="Pasword">Passwort</label>
+                        <input type="password" name="paso" id="Pasword" placeholder="••••••••" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Anmelden</button>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Gustav-von-Schmoller-Schule Heilbronn</p>
+        </footer>
+    </div>
+</body>
+</html>
