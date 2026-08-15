@@ -1,157 +1,89 @@
+/* static/css.css */
+
 :root {
-    --bg-mint: #52e3c2;
-    --primary-blue: #0b4f8a;
-    --primary-blue-hover: #083c6b;
-    --text-main: #111111;
-    --text-muted: #555555;
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --nav-bg: #f8f9fa;
+    --nav-border: #e7e7e7;
+    --btn-bg: #007bff;
+    --btn-text: #ffffff;
     --card-bg: #ffffff;
-    --border-color: #e0e0e0;
-    --radius-smooth: 16px;
+    --card-border: #dddddd;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --nav-bg: #1f1f1f;
+    --nav-border: #333333;
+    --btn-bg: #375a7f;
+    --btn-text: #ffffff;
+    --card-bg: #1e1e1e;
+    --card-border: #333333;
 }
 
 body {
-    background-color: var(--bg-mint);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.page-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    min-height: 90vh;
-    background: var(--card-bg);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 30px 50px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    margin: 20px;
-}
-
-header {
+nav {
+    background-color: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 20px;
 }
 
-.gvss-logo {
-    height: 50px;
-    width: auto;
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-right: 1.5rem;
+    font-weight: bold;
 }
 
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 30px;
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
-nav ul li {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-nav ul li:hover {
-    color: var(--primary-blue);
-}
-
-.main-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    padding: 40px 0;
-}
-
-.login-card {
-    width: 100%;
-    max-width: 420px;
+.card {
     background-color: var(--card-bg);
-    padding: 40px;
-    border-radius: var(--radius-smooth);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-}
-
-.login-card h1 {
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    color: var(--text-main);
-}
-
-.subtitle {
-    font-size: 15px;
-    color: var(--text-muted);
-    margin-bottom: 30px;
-}
-
-.input-group {
-    margin-bottom: 22px;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-.input-group label {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text-main);
-}
-
-.input-group input {
-    padding: 14px 16px;
-    background: #fafafa;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--card-border);
     border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    outline: none;
+    padding: 2rem;
+    margin-top: 1rem;
 }
 
-.input-group input:focus {
-    border-color: var(--primary-blue);
-    background: white;
-    box-shadow: 0 0 0 4px rgba(11, 79, 138, 0.15);
-}
-
-.submit-btn {
-    width: 100%;
-    padding: 14px;
-    background-color: var(--primary-blue);
-    color: white;
+button {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-    margin-top: 15px;
+    font-size: 1rem;
+    transition: background-color 0.2s;
 }
 
-.submit-btn:hover {
-    background-color: var(--primary-blue-hover);
+button:hover {
+    opacity: 0.9;
 }
 
-footer {
-    text-align: center;
-    font-size: 14px;
-    color: var(--text-muted);
-    border-top: 1px solid var(--border-color);
-    padding-top: 20px;
+input {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    width: 100%;
+    box-sizing: border-box;
 }
