@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logging</title>
+    <title>Anmeldung</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css.css') }}">
 </head>
-<body>
-    <img class="Loading_icon" src="{{url_for('static',filename='Loading_icon.gif')}}" alt="loading">
+<body> <div class="loginor">
+        <header class="div1">
+            <img class="gvss-logo" src="{{ url_for('static', filename='GvSS-logo-blau.png') }}" alt="Gvss-Logo">
+            <nav class="div2">
+                <ul>
+                    <li>Bildungsangebote</li>
+                    <li>Schule</li>
+                    <li>#GvSS</li>
+                    <li>Aktuelles</li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="div6">
+        </main>
+
+        <footer class="div7">
+            <p>&copy; 2026 Gustav-von-Schmoller-Schule Heilbronn</p>
+        </footer>
+    </div>
 </body>
 </html>

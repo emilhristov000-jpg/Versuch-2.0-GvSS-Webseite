@@ -1,89 +1,164 @@
-/* static/css.css */
-
 :root {
-    --bg-color: #ffffff;
+    --bg-color: #f4f6f8;
     --text-color: #333333;
-    --nav-bg: #f8f9fa;
+    --nav-bg: #ffffff;
     --nav-border: #e7e7e7;
     --btn-bg: #007bff;
+    --btn-hover: #0056b3;
     --btn-text: #ffffff;
     --card-bg: #ffffff;
     --card-border: #dddddd;
 }
 
-/* Dark Mode Variables */
-[data-theme="dark"] {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --nav-bg: #1f1f1f;
-    --nav-border: #333333;
-    --btn-bg: #375a7f;
-    --btn-text: #ffffff;
-    --card-bg: #1e1e1e;
-    --card-border: #333333;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
+    font-family: Arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
 }
 
-nav {
-    background-color: var(--nav-bg);
-    border-bottom: 1px solid var(--nav-border);
-    padding: 1rem 2rem;
+.loginor {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+        "top"
+        "wow"
+        "owo";
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.div1 {
+    grid-area: top;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: var(--nav-bg);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--nav-border);
+    border-radius: 8px;
 }
 
-nav a {
-    color: var(--text-color);
-    text-decoration: none;
-    margin-right: 1.5rem;
-    font-weight: bold;
+.gvss-logo {
+    height: clamp(2rem, 4vw, 3.5rem);
+    width: auto;
 }
 
-.container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+.div2 ul {
+    display: flex;
+    gap: 2em;
+    list-style: none;
 }
 
-.card {
+.div2 li {
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.div2 li:hover {
+    color: var(--btn-bg);
+}
+
+.div6 {
+    grid-area: wow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.login-card {
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 2rem;
-    margin-top: 1rem;
+    border-radius: 10px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-button {
+.login-card h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #666666;
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+
+.input-group input {
+    padding: 0.75rem;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--btn-bg);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
     background-color: var(--btn-bg);
     color: var(--btn-text);
     border: none;
-    padding: 0.5rem 1rem;
     border-radius: 5px;
-    cursor: pointer;
     font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.2s;
 }
 
-button:hover {
-    opacity: 0.9;
+.submit-btn:hover {
+    background-color: var(--btn-hover);
 }
 
-input {
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border: 1px solid var(--card-border);
-    border-radius: 4px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    width: 100%;
-    box-sizing: border-box;
+.div7 {
+    grid-area: owo;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    font-size: 0.85rem;
+    color: #777777;
+}
+
+@media (max-width: 768px) {
+    .div1 {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .div2 ul {
+        gap: 1em;
+        font-size: 0.9rem;
+    }
 }

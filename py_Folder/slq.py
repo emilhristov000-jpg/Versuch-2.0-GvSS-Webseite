@@ -1,9 +1,10 @@
+from . import crypting
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 import os
 import uuid
-import crypting
 from faker import Faker
+from datetime import datetime,timezone
 
 fake = Faker("de_DE")
 app = Flask(__name__)
@@ -17,6 +18,29 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = "users"
+
+    last_log = db.Column(
+       db.DateTime,
+       nullable=False,
+       default=lambda: datetime.now(timezone.utc)
+    )
+
+    online = db.Column(
+       db.Boolean,
+       nullable=False,
+       default=False
+    )
+
+    trys =  db.Column(
+       db.Integer,
+       default=0
+    )
+
+    rolle = db.Column(
+       db.String(12),
+       nullable=False,
+       default="Schüler"
+    )
 
     id = db.Column(
         db.String(36),
@@ -109,20 +133,24 @@ with app.app_context():
   db.create_all()
 
 def erstellung(mail, password, name, nachname):
+  _mail = mail.strip().lower()
   with app.app_context():
-    user = User(mail=mail,
-                password=password,
+    user = User(mail=_mail,
+                password=crypting.pasoschlsl(password),
                 name=name,
-                nachname=nachname)
+                nachname=nachname,
+                last_log=datetime.now(timezone.utc),
+                online=True,
+                trys=0)
 
     db.session.add(user)
     db.session.commit()
 
-abcdefghijklnmop = ("emo", "emo", "emo", "emo")
-qrstovxyz = ()
+#abcdefghijklnmop = ("emo", "emo", "emo", "emo")
+#qrstovxyz = ()
 
-for i in abcdefghijklnmop:
-    qrstovxyz += (i,)
+#for i in abcdefghijklnmop:
+#    qrstovxyz += (i,)
 def fakeinerung(wow0):
     kabvddogn = 0
     while kabvddogn <= wow0:
@@ -132,6 +160,15 @@ def fakeinerung(wow0):
             (f"{first_name}.{last_name}@gvss.de"), 
             fake.password(),
             first_name,
-            last_name,)
+            last_name,
+            )
         print(wow)
         kabvddogn+=1
+
+def suche(wow):
+   with app.app_context():
+    email_clean = str(wow).strip().lower()
+    return User.query.filter_by(mail=email_clean).first()
+
+def idsuche(wow):
+   User.query.filter_by(name=wow).scalar()

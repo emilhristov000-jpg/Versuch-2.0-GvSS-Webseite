@@ -1,2 +1,10 @@
 instance/
 geheim.key
+.vscode/
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.sqlite3
+*.db
+.vscode/
