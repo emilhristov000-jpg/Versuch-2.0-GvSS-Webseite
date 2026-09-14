@@ -1,6 +1,6 @@
 # Schüler helfen Schüler
 
-**Status:** 🚧 In Entwicklung
+**Status:** In Entwicklung
 
 Eine Plattform zur Vermittlung von Schülern, die Unterstützung benötigen, mit Schülern, die anderen beim Lernen helfen möchten.
 
