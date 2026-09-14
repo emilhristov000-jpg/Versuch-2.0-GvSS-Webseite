@@ -162,3 +162,82 @@ body {
         font-size: 0.9rem;
     }
 }
+
+.range input[type="range"]{
+    pointer-events: none;
+    margin: 0;
+}
+
+.range input[type="range"]::-webkit-slider-thumb{
+    pointer-events: auto
+}
+
+.range{
+    display: flex;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+}
+
+.profil_forum{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.range input[type="range"]{
+    pointer-events: none;
+    margin: 0;
+}
+
+.range input[type="range"]::-webkit-slider-thumb{
+    pointer-events: auto
+}
+
+.range{
+    display: flex;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+}
+
+.profil_forum{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    background-color: blueviolet;
+    width: min-content;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+#maxtime{
+    z-index: 2;
+}
+
+.ownerpfp{
+    border-radius: 50px;
+    height: 10rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10rem;
+}
+
+.tage input{
+    display: none;
+}
+
+.tage {
+    display: flex;
+}
+
+.tage label{
+    padding: 5px;
+}
+
+.tage .wow:has(input:checked) {
+  color: aquamarine;
+}
