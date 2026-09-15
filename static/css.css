@@ -241,3 +241,178 @@ body {
 .tage .wow:has(input:checked) {
   color: aquamarine;
 }
+
+.dashboard .loginor {
+    width: 100%;
+    max-width: 1200px;
+    padding: 1rem;
+}
+
+.dashboard .div6 {
+    width: 100%;
+    align-items: flex-start;
+    padding: 2rem 0;
+}
+
+.dashboard .login-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.dashboard .login-card h1 {
+    overflow-wrap: anywhere;
+}
+
+.dashboard .ownerpfp {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+}
+
+.dashboard .tage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.dashboard .tage .wow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 2.5rem;
+    padding: 0.6rem 0.4rem;
+    margin: 0;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    text-align: center;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.dashboard .input-group > .wow {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.6rem 0.75rem;
+    margin: 0 0 0.5rem;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    font-weight: normal;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.dashboard .tage input,
+.dashboard .input-group > .wow input {
+    display: none;
+}
+
+.dashboard .tage .wow:has(input:checked),
+.dashboard .input-group > .wow:has(input:checked) {
+    background-color: var(--btn-bg);
+    border-color: var(--btn-bg);
+    color: var(--btn-text);
+}
+
+.dashboard .faecher {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.dashboard .faecher .wow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 2.5rem;
+    margin: 0;
+    padding: 0.6rem 0.3rem;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: normal;
+    text-align: center;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.dashboard .faecher input {
+    display: none;
+}
+
+.dashboard .faecher .wow:has(input:checked) {
+    background-color: var(--btn-bg);
+    border-color: var(--btn-bg);
+    color: var(--btn-text);
+}
+
+@media (max-width: 768px) {
+    .dashboard .loginor {
+        padding: 0.5rem;
+    }
+
+    .dashboard .div1 {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .dashboard .div2 {
+        width: 100%;
+    }
+
+    .dashboard .div2 ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.6rem 1rem;
+        width: 100%;
+    }
+
+    .dashboard .div2 li {
+        font-size: 0.85rem;
+    }
+
+    .dashboard .div6 {
+        padding: 1rem 0;
+    }
+
+    .dashboard .login-card {
+        max-width: 100%;
+        padding: 1.25rem;
+    }
+
+    .dashboard .login-card h1 {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .dashboard .subtitle {
+        text-align: center;
+    }
+
+    .dashboard .ownerpfp {
+        width: 7rem;
+        height: 7rem;
+    }
+
+    .dashboard .tage {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard .tage .wow,
+    .dashboard .input-group > .wow {
+        width: 100%;
+    }
+
+    .dashboard .submit-btn {
+        width: 100%;
+    }
+}

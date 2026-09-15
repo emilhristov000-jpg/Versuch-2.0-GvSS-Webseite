@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css.css') }}">
+</head>
+<body class="dashboard">
+    <div class="loginor">
+        <header class="div1">
+            <img
+                class="gvss-logo"
+                src="{{ url_for('static', filename='GvSS-logo-blau.png') }}"
+                alt="GvSS-Logo"
+            >
+
+            <nav class="div2" aria-label="Hauptnavigation">
+                <ul>
+                    <li>Bildungsangebote</li>
+                    <li>Schule</li>
+                    <li>#GvSS</li>
+                    <li>Aktuelles</li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="div6">
+            <section class="login-card">
+                <img
+                    class="ownerpfp"
+                    src="{{ url_for('static', filename='wow.jpg') }}"
+                    alt="Profilbild"
+                >
+
+                {% if user and class_id %}
+                    <h1>Willkommen zurück, {{ user.name }}!</h1>
+                    <p>Klasse: {{ class_id }}</p>
+                    <p class="subtitle">
+                        Wähle deine Wochentage und Fächer aus.
+                    </p>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('wo') }}">
+                    <div class="input-group">
+                        <label>Wochentage</label>
+
+                        <div class="tage">
+                            <label class="wow" for="montag">
+                                <input type="checkbox" id="montag" name="wochentag" value="1"> Montag
+                            </label>
+
+                            <label class="wow" for="dienstag">
+                                <input type="checkbox" id="dienstag" name="wochentag" value="2"> Dienstag
+                            </label>
+
+                            <label class="wow" for="mittwoch">
+                                <input type="checkbox" id="mittwoch" name="wochentag" value="4"> Mittwoch
+                            </label>
+
+                            <label class="wow" for="donnerstag">
+                                <input type="checkbox" id="donnerstag" name="wochentag" value="8">Donnerstag
+                            </label>
+
+                            <label class="wow" for="freitag">
+                                <input type="checkbox" id="freitag" name="wochentag" value="16">Freitag
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Fächer</label>
+
+                        <div class="faecher">
+                            {% for fach in fächer %}
+                                <label class="wow" for="fach-{{ loop.index }}">
+                                    <input type="checkbox" id="fach-{{ loop.index }}"name="fach" value="{{ 2**loop.index0 }}">
+                                    <span>{{ fach }}</span>
+                                </label>
+                            {% else %}
+                                <p class="subtitle">Keine Fächer vorhanden.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <button class="submit-btn" type="submit">
+                        Nachhilfe Anbieten
+                    </button>
+                </form>
+            </section>
+        </main>
+
+        <footer class="div7">
+            <p>&copy; 2026 Gustav-von-Schmoller-Schule Heilbronn</p>
+        </footer>
+    </div>
+</body>
+</html>

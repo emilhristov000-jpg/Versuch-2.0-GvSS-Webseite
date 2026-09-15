@@ -36,5 +36,3 @@ def redis_start():
 
         print("Could not connect to Redis after container start.")
         return None
-
-redis_start()

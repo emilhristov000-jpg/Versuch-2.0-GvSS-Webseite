@@ -1,20 +1,11 @@
 from . import crypting
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-import os
-import uuid
 from faker import Faker
-from datetime import datetime,timezone
+from datetime import datetime, timezone
+import uuid
 
 fake = Faker("de_DE")
-app = Flask(__name__)
-
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "DATABASE_URL",
-    "sqlite:///Schüler_Helfen_Schüler.db"
-)
-
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = "users"
@@ -69,8 +60,13 @@ class User(db.Model):
         nullable=False
     )
 
+    klasse = db.Column(
+        db.String(20),
+        nullable=True
+    )
+
 class Fach(db.Model):
-    __tablename__ = "faecher"
+    __tablename__ = "Fach"
 
     id = db.Column(
         db.String(36),
@@ -101,7 +97,7 @@ class UserFach(db.Model):
 
     fach_id = db.Column(
         db.String(36),
-        db.ForeignKey("faecher.id"),
+        db.ForeignKey("Fach.id"),
         nullable=False
     )
 
@@ -129,46 +125,27 @@ class Termin(db.Model):
         nullable=False
     )
 
-with app.app_context():
-  db.create_all()
-
-def erstellung(mail, password, name, nachname):
-  _mail = mail.strip().lower()
-  with app.app_context():
-    user = User(mail=_mail,
-                password=crypting.pasoschlsl(password),
-                name=name,
-                nachname=nachname,
-                last_log=datetime.now(timezone.utc),
-                online=True,
-                trys=0)
+def erstellung(mail, password, name, nachname, klasse=None):
+    user = User(
+        mail=mail.strip().lower(),
+        password=crypting.pasoschlsl(password),
+        name=name,
+        nachname=nachname,
+        klasse=klasse,
+        last_log=datetime.now(timezone.utc),
+        online=True,
+        trys=0,
+    )
 
     db.session.add(user)
     db.session.commit()
+    return user
 
-#abcdefghijklnmop = ("emo", "emo", "emo", "emo")
-#qrstovxyz = ()
-
-#for i in abcdefghijklnmop:
-#    qrstovxyz += (i,)
-def fakeinerung(wow0):
-    kabvddogn = 0
-    while kabvddogn <= wow0:
-        first_name = fake.first_name()
-        last_name = fake.last_name()
-        wow = erstellung(
-            (f"{first_name}.{last_name}@gvss.de"), 
-            fake.password(),
-            first_name,
-            last_name,
-            )
-        print(wow)
-        kabvddogn+=1
 
 def suche(wow):
-   with app.app_context():
-    email_clean = str(wow).strip().lower()
+    email_clean = str(wow or "").strip().lower()
     return User.query.filter_by(mail=email_clean).first()
 
+
 def idsuche(wow):
-   User.query.filter_by(name=wow).scalar()
+    return User.query.filter_by(name=wow).scalar()
