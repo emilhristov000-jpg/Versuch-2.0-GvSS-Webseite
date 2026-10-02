@@ -1,10 +1,7 @@
-from . import crypting
 from flask_sqlalchemy import SQLAlchemy
-from faker import Faker
 from datetime import datetime, timezone
 import uuid
 
-fake = Faker("de_DE")
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -128,7 +125,7 @@ class Termin(db.Model):
 def erstellung(mail, password, name, nachname, klasse=None):
     user = User(
         mail=mail.strip().lower(),
-        password=crypting.pasoschlsl(password),
+        password=password,
         name=name,
         nachname=nachname,
         klasse=klasse,
@@ -140,6 +137,7 @@ def erstellung(mail, password, name, nachname, klasse=None):
     db.session.add(user)
     db.session.commit()
     return user
+
 
 
 def suche(wow):

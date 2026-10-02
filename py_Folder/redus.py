@@ -1,4 +1,4 @@
-import redis
+"""import redis
 import subprocess
 import time
 
@@ -35,4 +35,4 @@ def redis_start():
                     continue
 
         print("Could not connect to Redis after container start.")
-        return None
+        return None"""

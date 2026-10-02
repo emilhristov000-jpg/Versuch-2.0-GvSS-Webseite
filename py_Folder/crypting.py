@@ -1,4 +1,4 @@
-from cryptography.fernet import Fernet
+"""from cryptography.fernet import Fernet
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from werkzeug.security import check_password_hash
@@ -24,4 +24,4 @@ def entschlsl(wow):
 
 
 def pasoschlsl(wow):
-    return generate_password_hash(str(wow))
+    return generate_password_hash(str(wow))"""

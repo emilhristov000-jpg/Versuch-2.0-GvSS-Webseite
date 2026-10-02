@@ -2,12 +2,12 @@ from py_Folder import redus, slq
 from py_Folder.slq import db, erstellung
 from flask import Flask, render_template, request, redirect, session, abort
 import os
+import secrets
 
 
 app = Flask(__name__)
 
-with open("geheim.key", "r") as apl:
-    app.secret_key = apl.read()
+app.config['SECRET_KEY']= secrets.token_hex(32)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL",
@@ -28,10 +28,7 @@ def anmelde():
 
         numeld = slq.suche(nmeld)
 
-        if numeld and slq.crypting.check_password_hash(
-            numeld.password,
-            pmeld,
-        ):
+        if numeld and numeld.password== pmeld:
             session["id"] = numeld.id
             session["class_id"] = numeld.klasse
             return redirect("/wo")
@@ -64,8 +61,8 @@ def wo():
     return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,)
 
 
-
+#slq.erstellung("emo.He@gvss.de","password","emo","emo2","10A")
 
 if __name__ == "__main__":
-    redus.redis_start()
-    app.run(host="0.0.0.0",debug=True,use_reloader=False,)
+#    redus.redis_start()
+    app.run(host="0.0.0.0",port=8080,debug=True,use_reloader=False,)
