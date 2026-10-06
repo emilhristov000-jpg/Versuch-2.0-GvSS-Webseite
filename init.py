@@ -1,8 +1,10 @@
-from py_Folder import redus, slq
+from py_Folder import redus, slq, crypting
 from py_Folder.slq import db, erstellung
 from flask import Flask, render_template, request, redirect, session, abort
 import os
 import secrets
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 
 app = Flask(__name__)
@@ -16,8 +18,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 
 db.init_app(app)
 
-with app.app_context():
-    db.create_all()
+
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -28,7 +29,7 @@ def anmelde():
 
         numeld = slq.suche(nmeld)
 
-        if numeld and numeld.password== pmeld:
+        if numeld and crypting.check_password_hash(numeld.password, pmeld):
             session["id"] = numeld.id
             session["class_id"] = numeld.klasse
             return redirect("/wo")
@@ -40,7 +41,13 @@ def anmelde():
 
 @app.route("/wo", methods=["GET", "POST"])
 def wo():
+    fächer = ["Mathematik","Deutsch","Englisch","Chemie","Physik","Informatik","BWL","Reli/Ethik","VWL",]
     user_id = session.get("id")
+    selected_fach_summ = 0
+    selected_fach = [fach for fach in request.form.getlist("fach") if fach]
+
+    if selected_fach:
+        selected_fach_summ = sum(int(fach) for fach in selected_fach)
 
     if not user_id:
         return redirect("/")
@@ -55,14 +62,26 @@ def wo():
 
     if not class_id:
         return redirect("/")
+    if request.method == "POST":
 
-    fächer = ["Mathematik","Deutsch","Englisch","Chemie","Physik","Informatik","BWL","Reli/Ethik","VWL",]
+        for i in selected_fach:
+            if i is not None:
+                selected_fach_summ += int(i)
+        if selected_fach:
+            session["selected_fach"] = selected_fach
+            return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id, selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
 
-    return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,)
+    return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
+
+@app.route("/admin")
+def yobro__():
+    return Admin(app,name="Al husein",theme=Bootstrap4Theme())
 
 
 #slq.erstellung("emo.He@gvss.de","password","emo","emo2","10A")
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
 #    redus.redis_start()
-    app.run(host="0.0.0.0",port=8080,debug=True,use_reloader=False,)
+    app.run(host="0.0.0.0",port=8080,debug=True)

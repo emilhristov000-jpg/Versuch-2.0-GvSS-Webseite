@@ -1,5 +1,6 @@
 from py_Folder import slq
 from init import app
+from py_Folder import crypting 
 
 
 with app.app_context():
@@ -15,3 +16,11 @@ with app.app_context():
 
     except Exception as e:
         print(f"Error occurred: {e}")
+
+a = [1, 2, 3,None, 5]
+v = 0
+
+for i in a:
+    if i is not None:
+        v += i
+print(v) 

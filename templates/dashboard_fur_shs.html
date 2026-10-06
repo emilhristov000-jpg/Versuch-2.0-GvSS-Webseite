@@ -40,6 +40,10 @@
                         Wähle deine Wochentage und Fächer aus.
                     </p>
                 {% endif %}
+                
+                <p class="subtitle">{{error}}</p>
+                <p>selected_fach: {{ selected_fach }}</p>
+                <p>selected_fach_summ: {{ selected_fach_summ }}</p>
 
                 <form method="POST" action="{{ url_for('wo') }}">
                     <div class="input-group">

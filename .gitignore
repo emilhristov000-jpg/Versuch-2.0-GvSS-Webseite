@@ -8,3 +8,6 @@ __pycache__/
 *.sqlite3
 *.db
 .vscode/
+code
+.vscode-cli/
+vscode_cli.tar.gz

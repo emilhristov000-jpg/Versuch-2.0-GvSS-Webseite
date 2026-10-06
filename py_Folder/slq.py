@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 import uuid
+from . import crypting
 
 db = SQLAlchemy()
 
@@ -62,6 +63,17 @@ class User(db.Model):
         nullable=True
     )
 
+    def __init__(self, mail: str, password: str, name: str, nachname: str, klasse: str | None=None, last_log: datetime | None=None, online: bool=False, trys: int=0, rolle: str | None="Schüler"):
+        self.mail = mail
+        self.password = password
+        self.name = name
+        self.nachname = nachname
+        self.klasse = klasse
+        self.last_log = last_log or datetime.now(timezone.utc)
+        self.online = online
+        self.trys = trys
+        self.rolle = rolle
+
 class Fach(db.Model):
     __tablename__ = "Fach"
 
@@ -76,6 +88,9 @@ class Fach(db.Model):
         nullable=False,
         unique=True
     )
+
+    def __init__(self, fachname):
+        self.fachname = fachname
 
 class UserFach(db.Model):
     __tablename__ = "user_faecher"
@@ -97,6 +112,10 @@ class UserFach(db.Model):
         db.ForeignKey("Fach.id"),
         nullable=False
     )
+
+    def __init__(self, user_id, fach_id):
+        self.user_id = user_id
+        self.fach_id = fach_id
 
 class Termin(db.Model):
     __tablename__ = "termine"
@@ -122,10 +141,46 @@ class Termin(db.Model):
         nullable=False
     )
 
-def erstellung(mail, password, name, nachname, klasse=None):
+    def __init__(self, beuzugsdaten, date, standpunkt):
+        self.beuzugsdaten = beuzugsdaten
+        self.date = date
+        self.standpunkt = standpunkt
+
+class Lehrer(db.Model):
+    __tablename__ = "lehrer"
+
+    id = db.Column(
+        db.String(36),
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
+
+    name = db.Column(
+        db.String(20),
+        nullable=False
+    )
+
+    nachname = db.Column(
+        db.String(30),
+        nullable=False
+    )
+
+    Unterichtid = db.Column(
+        db.String(36),
+        db.ForeignKey("Fach.id"),
+        nullable=False
+    )
+
+    def __init__(self, name, nachname, Unterichtid):
+        self.name = name
+        self.nachname = nachname
+        self.Unterichtid = Unterichtid 
+
+
+def erstellung(mail, password, name, nachname, klasse):
     user = User(
         mail=mail.strip().lower(),
-        password=password,
+        password=crypting.pasoschlsl(password),
         name=name,
         nachname=nachname,
         klasse=klasse,
@@ -138,6 +193,46 @@ def erstellung(mail, password, name, nachname, klasse=None):
     db.session.commit()
     return user
 
+def lehrer_erstellung(name, nachname, unterichtid):
+    user = Lehrer(
+        name=name,
+        nachname=nachname,
+        Unterichtid=unterichtid
+    )
+
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+def fach_erstellung(fachname):
+    user = Fach(
+        fachname=fachname
+    )
+
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+def userfach_erstellung(user_id, fach_id):
+    user = UserFach(
+        user_id=user_id,
+        fach_id=fach_id
+    )
+
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+def termin_erstellung(beuzugsdaten, date, standpunkt):
+    user = Termin(
+        beuzugsdaten=beuzugsdaten,
+        date=date,
+        standpunkt=standpunkt
+    )
+
+    db.session.add(user)
+    db.session.commit()
+    return user
 
 
 def suche(wow):
