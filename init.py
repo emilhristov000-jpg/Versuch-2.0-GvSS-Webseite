@@ -1,4 +1,4 @@
-from py_Folder import redus, slq, crypting
+from py_Folder import redus,slq,crypting1
 from py_Folder.slq import db, erstellung
 from flask import Flask, render_template, request, redirect, session, abort
 import os
@@ -29,9 +29,9 @@ def anmelde():
 
         numeld = slq.suche(nmeld)
 
-        if numeld and crypting.check_password_hash(numeld.password, pmeld):
+        if numeld and crypting1.check_password_hash(numeld.password, pmeld):
             session["id"] = numeld.id
-            session["class_id"] = numeld.klasse
+            session["class_id"] = numeld.KlassenID
             return redirect("/wo")
 
         return render_template("startseite.html",error="Fehlerhafter Versuch",)
@@ -58,7 +58,7 @@ def wo():
         session.clear()
         return redirect("/")
 
-    class_id = user.klasse
+    class_id = user.KlassenID
 
     if not class_id:
         return redirect("/")
@@ -73,9 +73,6 @@ def wo():
 
     return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
 
-@app.route("/admin")
-def yobro__():
-    return Admin(app,name="Al husein",theme=Bootstrap4Theme())
 
 
 #slq.erstellung("emo.He@gvss.de","password","emo","emo2","10A")

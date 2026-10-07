@@ -10,8 +10,6 @@ Eine Plattform zur Vermittlung von Schülern, die Unterstützung benötigen, mit
 * Flask
 * Flask-SQLAlchemy
 * HTML / CSS / JavaScript
-* Redis
-* Docker
 
 ### Geplant
 

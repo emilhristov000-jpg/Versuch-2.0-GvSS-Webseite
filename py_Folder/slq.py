@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 import uuid
-from . import crypting
+from . import crypting1
+from sqlalchemy import ForeignKey
 
 db = SQLAlchemy()
 
@@ -58,24 +59,25 @@ class User(db.Model):
         nullable=False
     )
 
-    klasse = db.Column(
+    KlassenID = db.Column(
         db.String(20),
+        ForeignKey("Klassen.id"),
         nullable=True
     )
 
-    def __init__(self, mail: str, password: str, name: str, nachname: str, klasse: str | None=None, last_log: datetime | None=None, online: bool=False, trys: int=0, rolle: str | None="Schüler"):
+    def __init__(self, mail: str, password: str, name: str, nachname: str, KlassenID: str | None=None, last_log: datetime | None=None, online: bool=False, trys: int=0, rolle: str | None="Schüler"):
         self.mail = mail
         self.password = password
         self.name = name
         self.nachname = nachname
-        self.klasse = klasse
+        self.KlassenID = KlassenID
         self.last_log = last_log or datetime.now(timezone.utc)
         self.online = online
         self.trys = trys
         self.rolle = rolle
 
-class Fach(db.Model):
-    __tablename__ = "Fach"
+class Klassen(db.Model):
+    __tablename__ = "Klassen"
 
     id = db.Column(
         db.String(36),
@@ -83,16 +85,21 @@ class Fach(db.Model):
         default=lambda: str(uuid.uuid4())
     )
 
-    fachname = db.Column(
+    Klasse = db.Column(
         db.String(20),
-        nullable=False,
-        unique=True
+        nullable=False
     )
 
-    def __init__(self, fachname):
+    fachname = db.Column(
+        db.String(25),
+        nullable=False
+    )
+
+    def __init__(self, Klasse, fachname):
+        self.Klasse = Klasse
         self.fachname = fachname
 
-class UserFach(db.Model):
+class HelferSchuler(db.Model):
     __tablename__ = "user_faecher"
 
     id = db.Column(
@@ -109,7 +116,6 @@ class UserFach(db.Model):
 
     fach_id = db.Column(
         db.String(36),
-        db.ForeignKey("Fach.id"),
         nullable=False
     )
 
@@ -146,8 +152,8 @@ class Termin(db.Model):
         self.date = date
         self.standpunkt = standpunkt
 
-class Lehrer(db.Model):
-    __tablename__ = "lehrer"
+class Personal(db.Model):
+    __tablename__ = "personal"
 
     id = db.Column(
         db.String(36),
@@ -165,25 +171,24 @@ class Lehrer(db.Model):
         nullable=False
     )
 
-    Unterichtid = db.Column(
+    KlassenID = db.Column(
         db.String(36),
-        db.ForeignKey("Fach.id"),
+        db.ForeignKey("Klassen.id"),
         nullable=False
     )
 
-    def __init__(self, name, nachname, Unterichtid):
+    def __init__(self, name, nachname, KlassenID):
         self.name = name
         self.nachname = nachname
-        self.Unterichtid = Unterichtid 
-
+        self.KlassenID = KlassenID
 
 def erstellung(mail, password, name, nachname, klasse):
     user = User(
         mail=mail.strip().lower(),
-        password=crypting.pasoschlsl(password),
+        password=crypting1.pasoschlsl(password),
         name=name,
         nachname=nachname,
-        klasse=klasse,
+        KlassenID=klasse,
         last_log=datetime.now(timezone.utc),
         online=True,
         trys=0,
@@ -193,28 +198,28 @@ def erstellung(mail, password, name, nachname, klasse):
     db.session.commit()
     return user
 
-def lehrer_erstellung(name, nachname, unterichtid):
-    user = Lehrer(
+def personal_erstellung(name, nachname, KlassenID):
+    user = Personal(
         name=name,
         nachname=nachname,
-        Unterichtid=unterichtid
+        KlassenID=KlassenID
     )
 
     db.session.add(user)
     db.session.commit()
     return user
 
-def fach_erstellung(fachname):
-    user = Fach(
+def Klassenerstellung(klasse, fachname):
+    user = Klassen(
+        Klasse=klasse,
         fachname=fachname
-    )
+    )   
 
     db.session.add(user)
     db.session.commit()
     return user
-
 def userfach_erstellung(user_id, fach_id):
-    user = UserFach(
+    user = HelferSchuler(
         user_id=user_id,
         fach_id=fach_id
     )

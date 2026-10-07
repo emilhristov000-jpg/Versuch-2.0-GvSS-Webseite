@@ -1,6 +1,6 @@
 from py_Folder import slq
 from init import app
-from py_Folder import crypting 
+from py_Folder import crypting1 
 
 
 with app.app_context():
@@ -12,7 +12,7 @@ with app.app_context():
             "User",
             "10B",
         )
-        print(f"Benutzer erstellt: {user.mail}, Klasse: {user.klasse}")
+        print(f"Benutzer erstellt: {user.mail}, Klasse: {user.id}")
 
     except Exception as e:
         print(f"Error occurred: {e}")
