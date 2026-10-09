@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 from py_Folder import redus,slq,crypting1
+=======
+from py_Folder import redus, slq, crypting
+>>>>>>> f11c925 (Versuch Server Push)
 from py_Folder.slq import db, erstellung
 from flask import Flask, render_template, request, redirect, session, abort
 import os
 import secrets
 from flask_admin import Admin
+<<<<<<< HEAD
+=======
+from flask_admin.theme import Bootstrap4Theme
+>>>>>>> f11c925 (Versuch Server Push)
 from flask_admin.contrib.sqla import ModelView
 
 
@@ -29,7 +37,11 @@ def anmelde():
 
         numeld = slq.suche(nmeld)
 
+<<<<<<< HEAD
         if numeld and crypting1.check_password_hash(numeld.password, pmeld):
+=======
+        if numeld and crypting.check_password_hash(numeld.password, pmeld):
+>>>>>>> f11c925 (Versuch Server Push)
             session["id"] = numeld.id
             session["class_id"] = numeld.KlassenID
             return redirect("/wo")
@@ -70,9 +82,18 @@ def wo():
         if selected_fach:
             session["selected_fach"] = selected_fach
             return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id, selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
+<<<<<<< HEAD
 
     return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
 
+=======
+
+    return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
+
+@app.route("/admin")
+def yobro__():
+    return Admin(app,name="Al husein",theme=Bootstrap4Theme())
+>>>>>>> f11c925 (Versuch Server Push)
 
 
 #slq.erstellung("emo.He@gvss.de","password","emo","emo2","10A")

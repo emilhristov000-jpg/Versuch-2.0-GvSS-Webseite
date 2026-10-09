@@ -1,6 +1,10 @@
 from py_Folder import slq
 from init import app
+<<<<<<< HEAD
 from py_Folder import crypting1 
+=======
+from py_Folder import crypting 
+>>>>>>> f11c925 (Versuch Server Push)
 
 
 with app.app_context():
