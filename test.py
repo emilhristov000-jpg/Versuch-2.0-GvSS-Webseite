@@ -1,14 +1,10 @@
-from py_Folder import slq
+from py_Folder import slq, crypting1
 from init import app
-<<<<<<< HEAD
-from py_Folder import crypting1 
-=======
-from py_Folder import crypting 
->>>>>>> f11c925 (Versuch Server Push)
-
 
 with app.app_context():
     try:
+        slq.db.drop_all()
+        slq.db.create_all()
         user = slq.erstellung(
             "test@example.com",
             "password",
@@ -16,15 +12,7 @@ with app.app_context():
             "User",
             "10B",
         )
-        print(f"Benutzer erstellt: {user.mail}, Klasse: {user.id}")
-
+        print(f"Benutzer erstellt: {user.mail}, Klasse: {user.KlassenID}")
+        print(f"Password valid: {crypting1.check_password_hash(user.password, 'password')}")
     except Exception as e:
         print(f"Error occurred: {e}")
-
-a = [1, 2, 3,None, 5]
-v = 0
-
-for i in a:
-    if i is not None:
-        v += i
-print(v) 

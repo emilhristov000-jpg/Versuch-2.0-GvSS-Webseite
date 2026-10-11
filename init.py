@@ -1,23 +1,16 @@
-<<<<<<< HEAD
-from py_Folder import redus,slq,crypting1
-=======
-from py_Folder import redus, slq, crypting
->>>>>>> f11c925 (Versuch Server Push)
-from py_Folder.slq import db, erstellung
-from flask import Flask, render_template, request, redirect, session, abort
+from py_Folder import redus, slq, crypting1
+from py_Folder.slq import db
+from flask import Flask, render_template, request, redirect, session
 import os
 import secrets
-from flask_admin import Admin
-<<<<<<< HEAD
-=======
-from flask_admin.theme import Bootstrap4Theme
->>>>>>> f11c925 (Versuch Server Push)
+from flask_admin import AdminIndexView, expose,Admin,BaseView
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.theme import Bootstrap4Theme
 
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY']= secrets.token_hex(32)
+app.config["SECRET_KEY"] = secrets.token_hex(32)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL",
@@ -25,6 +18,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 )
 
 db.init_app(app)
+
 
 
 
@@ -37,11 +31,7 @@ def anmelde():
 
         numeld = slq.suche(nmeld)
 
-<<<<<<< HEAD
         if numeld and crypting1.check_password_hash(numeld.password, pmeld):
-=======
-        if numeld and crypting.check_password_hash(numeld.password, pmeld):
->>>>>>> f11c925 (Versuch Server Push)
             session["id"] = numeld.id
             session["class_id"] = numeld.KlassenID
             return redirect("/wo")
@@ -82,20 +72,40 @@ def wo():
         if selected_fach:
             session["selected_fach"] = selected_fach
             return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id, selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
-<<<<<<< HEAD
 
     return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
 
-=======
-
-    return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
-
-@app.route("/admin")
-def yobro__():
-    return Admin(app,name="Al husein",theme=Bootstrap4Theme())
->>>>>>> f11c925 (Versuch Server Push)
 
 
+class adminprobe(AdminIndexView):
+    def is_accessible(self):
+        return True #session.get('user_role') == 'admin'
+
+    
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect('/')
+
+
+admin = Admin(app,url="/admin", theme=Bootstrap4Theme(swatch='darkly'), index_view=adminprobe())
+
+
+
+class neuecostumseite(BaseView):
+    @expose('/')
+    def neuecostumseite(self):
+        return self.render('admin/index.html')
+
+    @expose('/details/')
+    def details(self):
+        return self.render('admin/daten_details.html')
+
+admin.add_views(neuecostumseite (name='Versuch2', endpoint='custom'),
+                ModelView(slq.User,db.session,name="Benutzer"),
+                ModelView(slq.Klassen,db.session,name="Klassen"),
+                ModelView(slq.Fach,db.session,name="Fächer"),
+                ModelView(slq.HelferSchuler,db.session,name="HelferSchuler"),
+                ModelView(slq.Termin, db.session,name="Termine"),
+                ModelView(slq.Lehrer, db.session, name="Lehr kräfte"))
 #slq.erstellung("emo.He@gvss.de","password","emo","emo2","10A")
 
 if __name__ == "__main__":

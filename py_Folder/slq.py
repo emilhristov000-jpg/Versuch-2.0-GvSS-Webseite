@@ -1,17 +1,19 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 import uuid
-<<<<<<< HEAD
 from . import crypting1
-from sqlalchemy import ForeignKey
-=======
-from . import crypting
->>>>>>> f11c925 (Versuch Server Push)
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     __tablename__ = "users"
+
+    id = db.Column(
+        db.String(36),
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
 
     last_log = db.Column(
        db.DateTime,
@@ -25,7 +27,7 @@ class User(db.Model):
        default=False
     )
 
-    trys =  db.Column(
+    trys = db.Column(
        db.Integer,
        default=0
     )
@@ -33,13 +35,7 @@ class User(db.Model):
     rolle = db.Column(
        db.String(12),
        nullable=False,
-       default="Schüler"
-    )
-
-    id = db.Column(
-        db.String(36),
-        primary_key=True,
-        default=lambda: str(uuid.uuid4())
+       default="Sch?ler"
     )
 
     mail = db.Column(
@@ -65,20 +61,20 @@ class User(db.Model):
 
     KlassenID = db.Column(
         db.String(20),
-        ForeignKey("Klassen.id"),
         nullable=True
     )
 
-    def __init__(self, mail: str, password: str, name: str, nachname: str, KlassenID: str | None=None, last_log: datetime | None=None, online: bool=False, trys: int=0, rolle: str | None="Schüler"):
-        self.mail = mail
-        self.password = password
-        self.name = name
-        self.nachname = nachname
+    def __init__(self, mail: str, password: str, name: str, nachname: str, KlassenID: str | None = None, last_log: datetime | None = None, online: bool = False, rolle: str | None = "Sch?ler", rolle2: str | None = ""):
+        self.mail = str(mail or "").strip().lower()
+        self.password = crypting1.pasoschlsl(password)
+        self.name = str(name or "").strip()
+        self.nachname = str(nachname or "").strip()
         self.KlassenID = KlassenID
-        self.last_log = last_log or datetime.now(timezone.utc)
+        self.rolle = rolle or "Sch?ler"
         self.online = online
-        self.trys = trys
-        self.rolle = rolle
+        if last_log is not None:
+            self.last_log = last_log
+
 
 class Klassen(db.Model):
     __tablename__ = "Klassen"
@@ -103,6 +99,26 @@ class Klassen(db.Model):
         self.Klasse = Klasse
         self.fachname = fachname
 
+
+class Fach(db.Model):
+    __tablename__ = "fach"
+
+    id = db.Column(
+        db.String(36),
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
+
+    fachname = db.Column(
+        db.String(25),
+        nullable=False,
+        unique=True
+    )
+
+    def __init__(self, fachname):
+        self.fachname = fachname
+
+
 class HelferSchuler(db.Model):
     __tablename__ = "user_faecher"
 
@@ -120,12 +136,17 @@ class HelferSchuler(db.Model):
 
     fach_id = db.Column(
         db.String(36),
+        db.ForeignKey("fach.id"),
         nullable=False
     )
 
     def __init__(self, user_id, fach_id):
         self.user_id = user_id
         self.fach_id = fach_id
+
+
+UserFach = HelferSchuler
+
 
 class Termin(db.Model):
     __tablename__ = "termine"
@@ -146,23 +167,20 @@ class Termin(db.Model):
         db.Date,
         nullable=False
     )
+
     standpunkt = db.Column(
         db.String(15),
         nullable=False
     )
 
-<<<<<<< HEAD
-    def __init__(self, beuzugsdaten, date, standpunkt):
-        self.beuzugsdaten = beuzugsdaten
-        self.date = date
+    def __init__(self,beuzugsdaten,date,standpunkt):
+        self.bezugsdaten = beuzugsdaten,
+        self.date = date,
         self.standpunkt = standpunkt
 
-class Personal(db.Model):
-    __tablename__ = "personal"
-=======
+
 class Lehrer(db.Model):
     __tablename__ = "lehrer"
->>>>>>> f11c925 (Versuch Server Push)
 
     id = db.Column(
         db.String(36),
@@ -180,126 +198,58 @@ class Lehrer(db.Model):
         nullable=False
     )
 
-<<<<<<< HEAD
-    KlassenID = db.Column(
-        db.String(36),
-        db.ForeignKey("Klassen.id"),
-        nullable=False
-    )
-
-    def __init__(self, name, nachname, KlassenID):
-        self.name = name
-        self.nachname = nachname
-        self.KlassenID = KlassenID
-
-def erstellung(mail, password, name, nachname, klasse):
-    user = User(
-        mail=mail.strip().lower(),
-        password=crypting1.pasoschlsl(password),
-=======
     Unterichtid = db.Column(
         db.String(36),
-        db.ForeignKey("Fach.id"),
+        db.ForeignKey("fach.id"),
         nullable=False
     )
 
-def erstellung(mail, password, name, nachname, klasse=None):
+
+def erstellung(mail, password, name, nachname, klasse=None, rolle="Sch?ler", rolle2=""):
     user = User(
-        mail=mail.strip().lower(),
-        password=crypting.pasoschlsl(password),
->>>>>>> f11c925 (Versuch Server Push)
+        mail=mail,
+        password=password,
         name=name,
         nachname=nachname,
         KlassenID=klasse,
-        last_log=datetime.now(timezone.utc),
-        online=True,
-        trys=0,
+        rolle=rolle,
+        rolle2=rolle2,
     )
-
     db.session.add(user)
     db.session.commit()
     return user
 
-<<<<<<< HEAD
-def personal_erstellung(name, nachname, KlassenID):
-    user = Personal(
-        name=name,
-        nachname=nachname,
-        KlassenID=KlassenID
-    )
-
-    db.session.add(user)
-    db.session.commit()
-    return user
 
 def Klassenerstellung(klasse, fachname):
-    user = Klassen(
-        Klasse=klasse,
-        fachname=fachname
-    )   
-
-    db.session.add(user)
+    klasse_record = Klassen(Klasse=klasse, fachname=fachname)
+    db.session.add(klasse_record)
     db.session.commit()
-    return user
-def userfach_erstellung(user_id, fach_id):
-    user = HelferSchuler(
-=======
-def lehrer_erstellung(name, nachname, unterichtid):
-    lehrer = Lehrer(
-        name=name,
-        nachname=nachname,
-        Unterichtid=unterichtid
-    )
+    return klasse_record
 
-    db.session.add(lehrer)
-    db.session.commit()
-    return lehrer
 
 def fach_erstellung(fachname):
-    fach = Fach(
-        fachname=fachname
-    )
-
+    fach = Fach(fachname=fachname)
     db.session.add(fach)
     db.session.commit()
     return fach
 
+
 def userfach_erstellung(user_id, fach_id):
-    userfach = UserFach(
->>>>>>> f11c925 (Versuch Server Push)
-        user_id=user_id,
-        fach_id=fach_id
-    )
-
-<<<<<<< HEAD
-    db.session.add(user)
-    db.session.commit()
-    return user
-
-def termin_erstellung(beuzugsdaten, date, standpunkt):
-    user = Termin(
-=======
+    userfach = UserFach(user_id=user_id, fach_id=fach_id)
     db.session.add(userfach)
     db.session.commit()
     return userfach
 
+
 def termin_erstellung(beuzugsdaten, date, standpunkt):
     termin = Termin(
->>>>>>> f11c925 (Versuch Server Push)
         beuzugsdaten=beuzugsdaten,
         date=date,
-        standpunkt=standpunkt
+        standpunkt=standpunkt,
     )
-
-<<<<<<< HEAD
-    db.session.add(user)
-    db.session.commit()
-    return user
-=======
     db.session.add(termin)
     db.session.commit()
     return termin
->>>>>>> f11c925 (Versuch Server Push)
 
 
 def suche(wow):
