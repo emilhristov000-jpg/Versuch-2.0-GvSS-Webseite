@@ -1,4 +1,4 @@
-from py_Folder import slq, crypting1
+from py_Folder import slq
 from init import app
 
 with app.app_context():
@@ -7,12 +7,12 @@ with app.app_context():
         slq.db.create_all()
         user = slq.erstellung(
             "test@example.com",
-            "password",
+            "test@example.com",
             "Test",
             "User",
             "10B",
         )
         print(f"Benutzer erstellt: {user.mail}, Klasse: {user.KlassenID}")
-        print(f"Password valid: {crypting1.check_password_hash(user.password, 'password')}")
+        print(f"Password valid: {user.password, 'password'}")
     except Exception as e:
         print(f"Error occurred: {e}")

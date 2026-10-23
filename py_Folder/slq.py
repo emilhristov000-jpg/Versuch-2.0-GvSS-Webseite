@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 import uuid
-from . import crypting1
 
 db = SQLAlchemy()
 
@@ -66,7 +65,7 @@ class User(db.Model):
 
     def __init__(self, mail: str, password: str, name: str, nachname: str, KlassenID: str | None = None, last_log: datetime | None = None, online: bool = False, rolle: str | None = "Sch?ler", rolle2: str | None = ""):
         self.mail = str(mail or "").strip().lower()
-        self.password = crypting1.pasoschlsl(password)
+        self.password = password
         self.name = str(name or "").strip()
         self.nachname = str(nachname or "").strip()
         self.KlassenID = KlassenID

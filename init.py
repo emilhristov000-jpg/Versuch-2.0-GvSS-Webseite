@@ -1,4 +1,4 @@
-from py_Folder import redus, slq, crypting1
+from py_Folder import redus, slq
 from py_Folder.slq import db
 from flask import Flask, render_template, request, redirect, session
 import os
@@ -6,7 +6,9 @@ import secrets
 from flask_admin import AdminIndexView, expose,Admin,BaseView
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.theme import Bootstrap4Theme
+from faker import Faker
 
+fake = Faker('de_DE')
 
 app = Flask(__name__)
 
@@ -19,9 +21,14 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 
 db.init_app(app)
 
-
-
-
+schlslkey_ = "geheim.key"
+if os.path.exists(schlslkey_):
+    with open(schlslkey_,"rb") as f:
+        frnt_schlsl = f.read()
+else:
+    frnt_schlsl = (secrets.token_hex(32)).encode('utf-8')
+    with open(schlslkey_,"wb") as f:
+        f.write(frnt_schlsl)
 
 @app.route("/", methods=["GET", "POST"])
 def anmelde():
@@ -31,7 +38,7 @@ def anmelde():
 
         numeld = slq.suche(nmeld)
 
-        if numeld and crypting1.check_password_hash(numeld.password, pmeld):
+        if numeld and numeld.password==pmeld:
             session["id"] = numeld.id
             session["class_id"] = numeld.KlassenID
             return redirect("/wo")
