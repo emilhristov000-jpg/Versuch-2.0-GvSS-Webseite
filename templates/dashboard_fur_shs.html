@@ -11,7 +11,7 @@
         <header class="div1">
             <img
                 class="gvss-logo"
-                src="{{ url_for('static', filename='GvSS-logo-blau.png') }}"
+                src="{{ url_for('static', filename='GvSS-logo-blau.webp') }}"
                 alt="GvSS-Logo"
             >
 
@@ -36,7 +36,11 @@
                     <label for="Freitag">Freitag</label><input type="checkbox" name="wow" id="Freitag">
                 </details>
                 <summary class="Fächer">Fächer</summary>
-                <details></details>
+                <details>
+                    <label for="Mathe"><input type="checkbox" name="fach" value="Mathe" id="Mathe">Mathe</label>
+                    <label for="Deutsch"><input type="checkbox" name="fach" value="Deutsch" id="Deutsch">Deutsch</label>
+                    <button type="submit">submit</button>
+                </details>
             </form>
         </div>
 
@@ -44,7 +48,7 @@
             <section class="login-card">
                 <img
                     class="ownerpfp"
-                    src="{{ url_for('static', filename='wow.jpg') }}"
+                    src="{{ url_for('static', filename='wow.webp') }}"
                     alt="Profilbild"
                 >
 
@@ -91,7 +95,7 @@
                         <div class="faecher">
                             {% for fach in fächer %}
                                 <label class="wow" for="fach-{{ loop.index }}">
-                                    <input type="checkbox" id="fach-{{ loop.index }}"name="fach" value="{{ 2**loop.index0 }}">
+                                    <input type="checkbox" id="fach-{{ loop.index }}" name="fach" value="{{ fach }}">
                                     <span>{{ fach }}</span>
                                 </label>
                             {% else %}
@@ -106,6 +110,7 @@
                 </form>
             </section>
         </main>
+
 
         <footer class="div7">
             <p>&copy; 2026 Gustav-von-Schmoller-Schule Heilbronn</p>

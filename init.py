@@ -7,7 +7,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.theme import Bootstrap4Theme
 
 from py_Folder import slq
-from py_Folder.slq import db
+from py_Folder.slq import db, fach_erstellung
 
 
 
@@ -22,98 +22,82 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 
 db.init_app(app)
 
-schlslkey_ = "geheim.key"
-if os.path.exists(schlslkey_):
-    with open(schlslkey_,"rb") as f:
-        frnt_schlsl = f.read()
+schluessel_datei = "geheim.key"
+if os.path.exists(schluessel_datei):
+    with open(schluessel_datei, "rb") as datei:
+        schluessel = datei.read()
 else:
-    frnt_schlsl = (secrets.token_hex(32)).encode('utf-8')
-    with open(schlslkey_,"wb") as f:
-        f.write(frnt_schlsl)
+    schluessel = secrets.token_hex(32).encode("utf-8")
+    with open(schluessel_datei, "wb") as datei:
+        datei.write(schluessel)
 
 @app.route("/", methods=["GET", "POST"])
-def anmelde():
+def anmeldung():
     if request.method == "POST":
-        nmeld = request.form.get("mail", "").strip().lower()
-        pmeld = request.form.get("paso", "")
+        email = request.form.get("mail", "").strip().lower()
+        passwort = request.form.get("paso", "")
 
-        numeld = slq.suche(nmeld)
+        benutzer = slq.suche(email)
 
-        if numeld and numeld.password==pmeld:
-            session["id"] = numeld.id
-            session["class_id"] = numeld.Klassen
+        if benutzer and benutzer.password == passwort:
+            session["id"] = benutzer.id
+            session["class_id"] = benutzer.Klassen
+            session["user_role"] = benutzer.rolle
             return redirect("/wo")
 
-        return render_template("startseite.html",error="Fehlerhafter Versuch",)
+        return render_template("startseite.html", error="Fehlerhafter Versuch")
 
     return render_template("startseite.html")
 
 
 @app.route("/wo", methods=["GET", "POST"])
 def wo():
-    fächer = ["Mathematik","Deutsch","Englisch","Chemie","Physik","Informatik","BWL","Reli/Ethik","VWL",]
-    user_id = session.get("id")
-    selected_fach_summ = 0
-    selected_fach = [fach for fach in request.form.getlist("fach") if fach]
-
-    if selected_fach:
-        selected_fach_summ = sum(int(fach) for fach in selected_fach)
-
-    if not user_id:
-        return redirect("/")
-
-    user = db.session.get(slq.User, user_id)
-
-    if user is None:
-        session.clear()
-        return redirect("/")
-
-    class_id = user.Klassen
-
-    if not class_id:
-        return redirect("/")
+    fächer = ["Mathe","Deutsch","English","BWL","DVA","Physik"]
     if request.method == "POST":
-
-        for i in selected_fach:
-            if i is not None:
-                selected_fach_summ += int(i)
-        if selected_fach:
-            session["selected_fach"] = selected_fach
-            return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id, selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
-
-    return render_template("dashboard_fur_shs.html", user=user, fächer=fächer, class_id=class_id,selected_fach=selected_fach,selected_fach_summ=selected_fach_summ)
+        nutzerid = session.get("id")
+        if nutzerid:
+            for fach in request.form.getlist("fach"):
+                fach_erstellung(fach, nutzerid)
+    return render_template("dashboard_fur_shs.html",fächer=fächer)
 
 
 
-class adminprobe(AdminIndexView):
+class AdminProbe(AdminIndexView):
     def is_accessible(self):
-        return True #session.get('user_role') == 'admin'
+        return True  # session.get("user_role") == "admin"
 
     
     def inaccessible_callback(self, name, **kwargs):
-        return redirect('/')
+        return redirect("/")
 
 
-admin = Admin(app,url="/admin", theme=Bootstrap4Theme(swatch='darkly'), index_view=adminprobe())
+admin = Admin(
+    app,
+    url="/admin",
+    theme=Bootstrap4Theme(swatch="darkly"),
+    index_view=AdminProbe(),
+)
 
 
 
-class neuecostumseite(BaseView):
+class adminprobe(BaseView):
     @expose('/')
-    def neuecostumseite(self):
+    def neue_custom_seite(self):
         return self.render('admin/index.html')
 
     @expose('/details/')
     def details(self):
         return self.render('admin/daten_details.html')
 
-admin.add_views(neuecostumseite (name='Versuch2', endpoint='custom'),
-                ModelView(slq.User,db,name="Benutzer"),
-                ModelView(slq.Fach,db,name="Fächer"),
-                ModelView(slq.Termin, db,name="Termine"),)
-#slq.erstellung("emo.He@gvss.de","password","emo","emo2","10A")
+admin.add_views(
+    adminprobe(name="Versuch2", endpoint="custom"),
+    ModelView(slq.User, db, name="Benutzer"),
+    ModelView(slq.Fach, db, name="Fächer"),
+    ModelView(slq.Termin, db, name="Termine"),
+)
+# slq.erstellung("emo.He@gvss.de", "password", "emo", "emo2", "10A")
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(host="0.0.0.0",port=8080,debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)

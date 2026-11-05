@@ -1,4 +1,5 @@
 import uuid
+from flask import session
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -72,12 +73,17 @@ class Fach(db.Model):
 
     fachname = db.Column(
         db.String(25),
-        nullable=False,
-        unique=True
+        nullable=False
     )
 
-    def __init__(self, **kwargs):
-        self.fachname = kwargs.get("fachname")
+    schülerid = db.Column(
+        db.String(30),
+        db.ForeignKey("User.id")
+    )
+
+    zugesagt = db.Column(
+        db.Boolean
+    )
 
 
 class Termin(db.Model):
@@ -112,7 +118,7 @@ class Termin(db.Model):
     )
 
 
-def erstellung(mail, password, name, nachname, klasse=None, rolle=None, position=None,Bestanden=None):
+def erstellung(mail, password, name, nachname, klasse=None, rolle="Schüler", position=None,Bestanden=None):
     user = User(
         mail=mail,
         password=password,
@@ -128,8 +134,11 @@ def erstellung(mail, password, name, nachname, klasse=None, rolle=None, position
     return user
 
 
-def fach_erstellung(fachname):
-    fach = Fach(fachname=fachname)
+def fach_erstellung(fachname,schülerid):
+    fach = Fach(
+    fachname=fachname,
+    schülerid=schülerid,
+    zugesagt=False)
     db.session.add(fach)
     db.session.commit()
     return fach

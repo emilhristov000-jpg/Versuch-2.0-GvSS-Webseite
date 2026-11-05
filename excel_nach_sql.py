@@ -2,8 +2,7 @@ import pandas as pd
 from faker import Faker
 
 from init import app
-from py_Folder import slq
-from py_Folder.slq import db
+from py_Folder.slq import db,erstellung
 
 faker = Faker('de_DE')
 
@@ -17,4 +16,4 @@ with app.app_context():
     for i in wow:
         mail = f"{i[2]}.{i[3]}@gvss.de"
         mail = mail.replace(" ","").strip().lower()
-        slq.erstellung(mail, faker.password(), i[3], i[2], i[0], "Schüler", "", None)
+        erstellung(mail, faker.password(), i[3], i[2], i[0], "Schüler", "", None)
