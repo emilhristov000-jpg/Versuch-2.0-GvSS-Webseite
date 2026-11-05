@@ -25,6 +25,21 @@
             </nav>
         </header>
 
+        <div class="Suche">
+            <form method="POST" action="{{ url_for('wo') }}">
+                <summary class="Tage">Erreichbarkeit</summary>
+                <details>
+                    <label for="montag">Montag</label><input type="checkbox" name="wow" id="montag">
+                    <label for="dienstag">Dienstag</label><input type="checkbox" name="wow" id="dienstag">
+                    <label for="mittwoch">Mittwoch</label><input type="checkbox" name="wow" id="mittwoch">
+                    <label for="donnerstag">Donnerstag</label><input type="checkbox" name="wow" id="donnerstag">
+                    <label for="Freitag">Freitag</label><input type="checkbox" name="wow" id="Freitag">
+                </details>
+                <summary class="Fächer">Fächer</summary>
+                <details></details>
+            </form>
+        </div>
+
         <main class="div6">
             <section class="login-card">
                 <img
@@ -34,16 +49,14 @@
                 >
 
                 {% if user and class_id %}
-                    <h1>Willkommen zurück, {{ user.name }}!</h1>
+                    <h1>Willkommen zurück,
+                        <br> {{ user.name }}!</h1>
                     <p>Klasse: {{ class_id }}</p>
                     <p class="subtitle">
                         Wähle deine Wochentage und Fächer aus.
                     </p>
                 {% endif %}
-                
-                <p class="subtitle">{{error}}</p>
-                <p>selected_fach: {{ selected_fach }}</p>
-                <p>selected_fach_summ: {{ selected_fach_summ }}</p>
+            
 
                 <form method="POST" action="{{ url_for('wo') }}">
                     <div class="input-group">

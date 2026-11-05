@@ -1,5 +1,6 @@
 from init import app
 from py_Folder.slq import Klassenerstellung
+
 v = {
 "Bfw" : ["Mathe", "Deutsch", "Englisch"],
 "Bkwi" : ["Mathe","Deutsch","Eng"],

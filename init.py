@@ -1,14 +1,15 @@
-from py_Folder import redus, slq
-from py_Folder.slq import db
-from flask import Flask, render_template, request, redirect, session
 import os
 import secrets
-from flask_admin import AdminIndexView, expose,Admin,BaseView
+
+from flask import Flask, redirect, render_template, request, session
+from flask_admin import Admin, AdminIndexView, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.theme import Bootstrap4Theme
-from faker import Faker
 
-fake = Faker('de_DE')
+from py_Folder import slq
+from py_Folder.slq import db
+
+
 
 app = Flask(__name__)
 
@@ -40,7 +41,7 @@ def anmelde():
 
         if numeld and numeld.password==pmeld:
             session["id"] = numeld.id
-            session["class_id"] = numeld.KlassenID
+            session["class_id"] = numeld.Klassen
             return redirect("/wo")
 
         return render_template("startseite.html",error="Fehlerhafter Versuch",)
@@ -67,7 +68,7 @@ def wo():
         session.clear()
         return redirect("/")
 
-    class_id = user.KlassenID
+    class_id = user.Klassen
 
     if not class_id:
         return redirect("/")
@@ -107,16 +108,12 @@ class neuecostumseite(BaseView):
         return self.render('admin/daten_details.html')
 
 admin.add_views(neuecostumseite (name='Versuch2', endpoint='custom'),
-                ModelView(slq.User,db.session,name="Benutzer"),
-                ModelView(slq.Klassen,db.session,name="Klassen"),
-                ModelView(slq.Fach,db.session,name="Fächer"),
-                ModelView(slq.HelferSchuler,db.session,name="HelferSchuler"),
-                ModelView(slq.Termin, db.session,name="Termine"),
-                ModelView(slq.Lehrer, db.session, name="Lehr kräfte"))
+                ModelView(slq.User,db,name="Benutzer"),
+                ModelView(slq.Fach,db,name="Fächer"),
+                ModelView(slq.Termin, db,name="Termine"),)
 #slq.erstellung("emo.He@gvss.de","password","emo","emo2","10A")
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-#    redus.redis_start()
     app.run(host="0.0.0.0",port=8080,debug=True)

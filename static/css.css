@@ -163,46 +163,23 @@ body {
     }
 }
 
-.range input[type="range"]{
+.range input[type="range"] {
     pointer-events: none;
     margin: 0;
 }
 
-.range input[type="range"]::-webkit-slider-thumb{
-    pointer-events: auto
+.range input[type="range"]::-webkit-slider-thumb {
+    pointer-events: auto;
 }
 
-.range{
+.range {
     display: flex;
     padding: 0;
     gap: 0;
     justify-content: center;
 }
 
-.profil_forum{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    flex-wrap: wrap;
-}
-
-.range input[type="range"]{
-    pointer-events: none;
-    margin: 0;
-}
-
-.range input[type="range"]::-webkit-slider-thumb{
-    pointer-events: auto
-}
-
-.range{
-    display: flex;
-    padding: 0;
-    gap: 0;
-    justify-content: center;
-}
-
-.profil_forum{
+.profil_forum {
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -213,11 +190,11 @@ body {
     border-radius: 20px;
 }
 
-#maxtime{
+#maxtime {
     z-index: 2;
 }
 
-.ownerpfp{
+.ownerpfp {
     border-radius: 50px;
     height: 10rem;
     display: block;
@@ -226,7 +203,8 @@ body {
     width: 10rem;
 }
 
-.tage input{
+.tage input,
+.dashboard .input-group > .wow input {
     display: none;
 }
 
@@ -234,28 +212,20 @@ body {
     display: flex;
 }
 
-.tage label{
+.tage label {
     padding: 5px;
 }
 
 .tage .wow:has(input:checked) {
-  color: aquamarine;
-}
-
-.dashboard .loginor {
-    width: 100%;
-    max-width: 1200px;
-    padding: 1rem;
+    color: aquamarine;
 }
 
 .dashboard .div6 {
     width: 100%;
     align-items: flex-start;
-    padding: 2rem 0;
 }
 
 .dashboard .login-card {
-    width: 100%;
     max-width: 500px;
     padding: 2rem;
     overflow: hidden;
@@ -266,8 +236,6 @@ body {
 }
 
 .dashboard .ownerpfp {
-    width: 10rem;
-    height: 10rem;
     object-fit: cover;
 }
 
@@ -306,11 +274,6 @@ body {
     font-weight: normal;
     overflow-wrap: anywhere;
     cursor: pointer;
-}
-
-.dashboard .tage input,
-.dashboard .input-group > .wow input {
-    display: none;
 }
 
 .dashboard .tage .wow:has(input:checked),
@@ -409,10 +372,6 @@ body {
 
     .dashboard .tage .wow,
     .dashboard .input-group > .wow {
-        width: 100%;
-    }
-
-    .dashboard .submit-btn {
         width: 100%;
     }
 }
